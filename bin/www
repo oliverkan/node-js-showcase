@@ -7,12 +7,13 @@
 var app = require('../app');
 var debug = require('debug')('node-js-showcase:server');
 var http = require('http');
+require("custom-env").env(true);
 
 /**
  * Get port from environment and store in Express.
  */
 
-var port = normalizePort(process.env.PORT || '3001');
+var port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
 
 /**
