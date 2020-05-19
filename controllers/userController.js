@@ -23,12 +23,29 @@ exports.user_create = function (req, res, next) {
             birthDate: new Date(req.body.birthdate)
         }
     );
-    console.log(user);
-
+   
     user.save(function (err) {
         if (err) {
             return next(err);
         }
         res.send('User Created successfully')
+    })
+};
+
+exports.user_update = function (req, res, next) {
+    User.findByIdAndUpdate(req.params.id, {$set: req.body}, function (err, user) {
+        if (err) {
+            return next(err);
+        }
+        res.send('User udpated.');
+    });
+};
+
+exports.user_delete = function (req, res, next) {
+    User.findByIdAndRemove(req.params.id, function (err) {
+        if (err) {
+            return next(err);
+        }
+        res.send('Deleted successfully!');
     })
 };

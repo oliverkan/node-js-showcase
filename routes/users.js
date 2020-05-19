@@ -12,13 +12,9 @@ router.get('/:id', user_controller.user_details);
 router.post('/', user_controller.user_create);
 
 /* update user. */
-router.put('/', function(req, res, next) {
-  res.send('update user');
-});
+router.put('/:id/update', user_controller.user_update);
 
 /* delete user. */
-router.delete('/', function(req, res, next) {
-  res.send('delete user');
-});
+router.delete('/:id/delete', user_controller.user_delete);
 
 module.exports = router;
