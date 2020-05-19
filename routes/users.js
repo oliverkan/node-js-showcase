@@ -5,6 +5,9 @@ const user_controller = require('../controllers/userController');
 /* GET users listing. */
 router.get('/', user_controller.test);
 
+/* find user by id and return details. */
+router.get('/:id', user_controller.user_details);
+
 /* create new user. */
 router.post('/', user_controller.user_create);
 
