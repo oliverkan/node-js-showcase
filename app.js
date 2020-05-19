@@ -6,6 +6,7 @@ var logger = require('morgan');
 const compression = require('compression');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+require("custom-env").env(true);
 
 var usersRouter = require('./routes/users');
 
@@ -40,8 +41,7 @@ app.use(function(err, req, res, next) {
 
 // Set up mongoose connection
 
-let dev_db_url = "mongodb+srv://github-showcase-db-user:dvZGBm9uZmP5M1QL@github-showcase-cluster-wbn5n.mongodb.net/nodejs-showcase?retryWrites=true&w=majority";
-let mongoDB = process.env.MONGODB_URI || dev_db_url;
+let mongoDB = process.env.MONGODB_URI;
 mongoose.connect(mongoDB);
 mongoose.Promise = global.Promise;
 let db = mongoose.connection;
