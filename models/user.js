@@ -5,6 +5,7 @@ let UserSchema = new Schema({
     name: {type: String, required: true, max: 100},
     lastName: {type: String, required: true, max: 100},
     birthDate: { type: Date, required:true },
+    nationality:  { type: mongoose.Schema.Types.ObjectId, ref: 'Country' }
 });
 
 
