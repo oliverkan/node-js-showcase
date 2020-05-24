@@ -12,7 +12,7 @@ require("custom-env").env(true);
 const usersRouter = require('./routes/users');
 const countriesRouter = require('./routes/countries');
 
-var app = express();
+const app = express();
 
 app.use(logger('dev'));
 app.use(compression());
