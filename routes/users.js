@@ -1,9 +1,9 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
 const user_controller = require('../controllers/userController');
 
 /* GET users listing. */
-router.get('/', user_controller.test);
+router.get('/', user_controller.users);
 
 /* find user by id and return details. */
 router.get('/:id', user_controller.user_details);
