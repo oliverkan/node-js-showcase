@@ -11,7 +11,7 @@ exports.user_details = function (req, res, next) {
             return next(err);
         }
         res.send(user);
-    })
+    }).populate('nationality');
 };
 
 exports.user_create = function (req, res, next) {
@@ -20,15 +20,18 @@ exports.user_create = function (req, res, next) {
         {
             name: req.body.name,
             lastName: req.body.lastname,
-            birthDate: new Date(req.body.birthdate)
+            birthDate: new Date(req.body.birthdate),
+            userName: req.body.userName,
+            password: req.body.password,
+            nationality: req.body.nationality
         }
     );
-   
+
     user.save(function (err) {
         if (err) {
             return next(err);
         }
-        res.send('User Created successfully')
+        res.send(user)
     })
 };
 
