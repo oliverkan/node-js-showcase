@@ -1,11 +1,16 @@
 const User = require('../models/user');
 
 //Simple version, without validation or sanitation
-exports.test = function (req, res) {
-    res.send('Greetings from the Test controller!');
+exports.users = (req, res, next) => {
+    User.find( function (err, user) {
+        if (err) {
+            return next(err);
+        }
+        res.send(user);
+    })
 };
 
-exports.user_details = function (req, res, next) {
+exports.user_details = (req, res, next) => {
     User.findById(req.params.id, function (err, user) {
         if (err) {
             return next(err);
@@ -14,7 +19,7 @@ exports.user_details = function (req, res, next) {
     }).populate('nationality');
 };
 
-exports.user_create = function (req, res, next) {
+exports.user_create = (req, res, next) => {
     //populate user object
     let user = new User(
         {
@@ -35,16 +40,16 @@ exports.user_create = function (req, res, next) {
     })
 };
 
-exports.user_update = function (req, res, next) {
+exports.user_update = (req, res, next) => {
     User.findByIdAndUpdate(req.params.id, {$set: req.body}, function (err, user) {
         if (err) {
             return next(err);
         }
-        res.send('User udpated.');
+        res.send('User updated.');
     });
 };
 
-exports.user_delete = function (req, res, next) {
+exports.user_delete = (req, res, next) => {
     User.findByIdAndRemove(req.params.id, function (err) {
         if (err) {
             return next(err);

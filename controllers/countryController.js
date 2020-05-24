@@ -1,6 +1,6 @@
 const Country = require('../models/country');
 
-exports.country_details = function (req, res, next) {
+exports.country_details = (req, res, next) => {
     Country.findById(req.params.id, function (err, country) {
         if (err) {
             return next(err);
@@ -9,8 +9,8 @@ exports.country_details = function (req, res, next) {
     })
 };
 
-exports.countries = function (req, res, next) {
-    Country.find( function (err, country) {
+exports.countries = (req, res, next) => {
+    Country.find(function (err, country) {
         if (err) {
             return next(err);
         }

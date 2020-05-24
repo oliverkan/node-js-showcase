@@ -2,7 +2,7 @@ const Country = require('../models/country');
 const fs = require("fs");
 const path = require("path");
 
-exports.checkData = function () {
+exports.checkData = () => {
     Country.find(function (err, countries) {
         if (err) {
             throw 'error on country query'
