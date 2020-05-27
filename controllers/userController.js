@@ -1,4 +1,5 @@
 const User = require('../models/user');
+const { authJwt } = require("../middlewares/authJwt");
 
 //Simple version, without validation or sanitation
 exports.users = (req, res, next) => {

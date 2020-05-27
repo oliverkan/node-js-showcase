@@ -1,20 +1,21 @@
 const express = require('express');
 const router = express.Router();
 const user_controller = require('../controllers/userController');
+const authJwt = require("../middlewares/authJwt");
 
 /* GET users listing. */
-router.get('/', user_controller.users);
+router.get('/', [authJwt.verifyToken, authJwt.isAdmin], user_controller.users);
 
 /* find user by id and return details. */
-router.get('/:id', user_controller.user_details);
+router.get('/:id', [authJwt.verifyToken], user_controller.user_details);
 
 /* create new user. */
-router.post('/', user_controller.user_create);
+router.post('/', [authJwt.verifyToken, authJwt.isAdmin],user_controller.user_create);
 
 /* update user. */
-router.put('/:id/update', user_controller.user_update);
+router.put('/:id/update', [authJwt.verifyToken],user_controller.user_update);
 
 /* delete user. */
-router.delete('/:id/delete', user_controller.user_delete);
+router.delete('/:id/delete', [authJwt.verifyToken, authJwt.isAdmin],user_controller.user_delete);
 
 module.exports = router;

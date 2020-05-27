@@ -9,6 +9,7 @@ const bodyParser = require('body-parser');
 const dataOperations = require('./data/dataOperations');
 require("custom-env").env(true);
 
+const authRouter = require('./routes/authentication');
 const usersRouter = require('./routes/users');
 const countriesRouter = require('./routes/countries');
 
@@ -23,6 +24,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use('/auth', authRouter);
 app.use('/users', usersRouter);
 app.use('/countries', countriesRouter);
 
@@ -41,6 +43,14 @@ app.use(function (err, req, res, next) {
     //res.status(err.status || 500);
     //res.render('error');
 });*/
+
+app.use(function(req, res, next) {
+    res.header(
+        "Access-Control-Allow-Headers",
+        "x-access-token, Origin, Content-Type, Accept"
+    );
+    next();
+});
 
 // Set up mongoose connection
 
