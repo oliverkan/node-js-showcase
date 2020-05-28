@@ -3,6 +3,7 @@ const Role = require('../models/role');
 const fs = require("fs");
 const path = require("path");
 
+exports.roles =["user", "moderator", "admin"];
 exports.checkData = () => {
     Country.estimatedDocumentCount((err, count) => {
         if (err) {
@@ -32,35 +33,17 @@ exports.checkData = () => {
 
     Role.estimatedDocumentCount((err, count) => {
         if (!err && count === 0) {
-            new Role({
-                name: "user"
-            }).save(err => {
-                if (err) {
-                    console.log("error", err);
-                }
+            roles.forEach(role => {
+                new Role({
+                    name: role
+                }).save(err => {
+                    if (err) {
+                        console.log("error", err);
+                    }
 
-                console.log("added 'user' to roles collection");
-            });
-
-            new Role({
-                name: "moderator"
-            }).save(err => {
-                if (err) {
-                    console.log("error", err);
-                }
-
-                console.log("added 'moderator' to roles collection");
-            });
-
-            new Role({
-                name: "admin"
-            }).save(err => {
-                if (err) {
-                    console.log("error", err);
-                }
-
-                console.log("added 'admin' to roles collection");
-            });
+                    console.log(`added ${role} to roles collection`);
+                });
+            })
         } else{
             console.log(count + " roles found in db")
         }

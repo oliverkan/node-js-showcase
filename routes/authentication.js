@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const authentication = require("../controllers/authController")
+const verifySignUp = require("../middlewares/verifySignup")
 
 // Login
 router.post('/login', (req, res, next) => {
@@ -8,8 +9,10 @@ router.post('/login', (req, res, next) => {
 })
 
 // Register
-router.post('/register', (req, res) => {
-    const {name, email, password, password2} = req.body;
+router.post('/register', [
+    verifySignUp.checkDuplicateUsernameOrEmail,
+    verifySignUp.checkRolesExisted
+], (req, res) => {
     authentication.signup(req, res);
 })
 
