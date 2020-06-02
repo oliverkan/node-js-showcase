@@ -6,12 +6,14 @@ const logger = require('morgan');
 const compression = require('compression');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const cors = require("cors");
 const dataOperations = require('./data/dataOperations');
 require("custom-env").env(true);
 
 const authRouter = require('./routes/authentication');
 const usersRouter = require('./routes/users');
 const countriesRouter = require('./routes/countries');
+const statisticsRouter = require('./routes/statistics');
 
 const app = express();
 
@@ -21,12 +23,17 @@ app.use(express.json());
 app.use(express.urlencoded({extended: false}));
 app.use(cookieParser());
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static(path.join(__dirname, 'public')));
+const corsOptions = {
+    origin: "http://localhost:8080"
+};
+app.use(cors(corsOptions));
 
 app.use('/auth', authRouter);
 app.use('/users', usersRouter);
 app.use('/countries', countriesRouter);
+app.use('/statistics', statisticsRouter);
 
 // catch 404 and forward to error handler
 /*app.use(function (req, res, next) {
