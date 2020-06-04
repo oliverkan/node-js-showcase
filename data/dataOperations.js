@@ -1,10 +1,13 @@
 const Country = require('../models/country');
 const Role = require('../models/role');
+const Statistic = require('../models/statistic');
 const fs = require("fs");
 const path = require("path");
 
 exports.roles =["user", "moderator", "admin"];
+
 exports.checkData = () => {
+    //check country collection on mongo db and if there is no data, read and insert country data
     Country.estimatedDocumentCount((err, count) => {
         if (err) {
             throw 'error on country query'
@@ -31,6 +34,7 @@ exports.checkData = () => {
         console.log(count + ' countries found in db');
     });
 
+    //check role collection on mongo db and if there is no data, insert role data
     Role.estimatedDocumentCount((err, count) => {
         if (!err && count === 0) {
             roles.forEach(role => {
@@ -47,6 +51,31 @@ exports.checkData = () => {
         } else{
             console.log(count + " roles found in db")
         }
+    });
+
+    //check statistic collection on mongo db and if there is no data, read and insert statistic data
+    Statistic.estimatedDocumentCount((err, count) => {
+        if (!err && count === 0) {
+            //read statisticData from file
+            const statisticData = JSON.parse(fs.readFileSync(path.resolve("data", "monthly_json.json")).toString());
+            //convert statisticData to statistic document objects for mongoDb
+            const statisticObject = statisticData.map(c => {
+                return new Statistic(
+                    {
+                        date: c.Date,
+                        mean: c.Mean,
+                        source: c.Source
+                    })
+            })
+
+            Statistic.insertMany(statisticObject, function (err) {
+                if (err) {
+                    throw 'error on statistic insert'
+                }
+                console.log('Statistics inserted successfully')
+            })
+        }
+        console.log(count + ' statistics found in db');
     });
 }
 
