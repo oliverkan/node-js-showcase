@@ -4,7 +4,7 @@ const {Roles} = require("../data/dataOperations");
 checkDuplicateUsernameOrEmail = (req, res, next) => {
     // Username
     User.findOne({
-        username: req.body.username
+        userName: req.body.userName
     }).exec((err, user) => {
         if (err) {
             res.status(500).send({message: err});
