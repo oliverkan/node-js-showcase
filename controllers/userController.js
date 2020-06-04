@@ -17,7 +17,7 @@ exports.user_details = (req, res, next) => {
             return next(err);
         }
         res.send(user);
-    }).populate('nationality');
+    }).populate('nationality').populate('roles');
 };
 
 exports.user_create = (req, res, next) => {
