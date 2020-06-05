@@ -12,7 +12,8 @@ exports.signup = (req, res) => {
         name: req.body.name,
         lastName: req.body.lastName,
         email: req.body.email,
-        password: bcrypt.hashSync(req.body.password, 8)
+        password: bcrypt.hashSync(req.body.password, 8),
+        nationality: req.body.nationality
     });
 
     user.save((err, user) => {
@@ -24,7 +25,7 @@ exports.signup = (req, res) => {
         if (req.body.roles) {
             Role.find(
                 {
-                    name: { $in: req.body.roles }
+                    _id: { $in: req.body.roles }
                 },
                 (err, roles) => {
                     if (err) {

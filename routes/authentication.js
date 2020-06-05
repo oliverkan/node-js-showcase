@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const authentication = require("../controllers/authController")
+const authentication = require("../controllers/authController");
+const roleController = require("../controllers/roleController");
 const verifySignUp = require("../middlewares/verifySignup")
 
 // Login
@@ -10,8 +11,7 @@ router.post('/login', (req, res, next) => {
 
 // Register
 router.post('/register', [
-    verifySignUp.checkDuplicateUsernameOrEmail,
-    verifySignUp.checkRolesExisted
+    verifySignUp.checkDuplicateUsernameOrEmail
 ], (req, res) => {
     authentication.signup(req, res);
 })
@@ -19,6 +19,11 @@ router.post('/register', [
 // Logout
 router.get('/logout', (req, res) => {
     req.logout();
+})
+
+// get roles
+router.get('/roles', (req, res) => {
+    roleController.roles(req,res);
 })
 
 module.exports = router;

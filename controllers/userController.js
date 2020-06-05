@@ -8,7 +8,7 @@ exports.users = (req, res, next) => {
             return next(err);
         }
         res.send(user);
-    })
+    }).populate('nationality').populate('roles');
 };
 
 exports.user_details = (req, res, next) => {

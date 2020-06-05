@@ -37,7 +37,7 @@ exports.checkData = () => {
     //check role collection on mongo db and if there is no data, insert role data
     Role.estimatedDocumentCount((err, count) => {
         if (!err && count === 0) {
-            roles.forEach(role => {
+            this.roles.forEach(role => {
                 new Role({
                     name: role
                 }).save(err => {
