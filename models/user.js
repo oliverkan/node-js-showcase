@@ -9,6 +9,7 @@ let UserSchema = new Schema({
         birthDate: {type: Date},
         nationality: {type: mongoose.Schema.Types.ObjectId, ref: 'Country'},
         password: {type: String, required: true},
+        image: {data: Buffer, type: String},
         roles: [
             {
                 type: mongoose.Schema.Types.ObjectId,
