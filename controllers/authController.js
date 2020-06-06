@@ -4,6 +4,8 @@ const Role = require("../models/role");
 
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
+const fs = require("fs");
+const path = require("path");
 
 exports.signup = (req, res) => {
     console.log(req.body)
@@ -13,7 +15,8 @@ exports.signup = (req, res) => {
         lastName: req.body.lastName,
         email: req.body.email,
         password: bcrypt.hashSync(req.body.password, 8),
-        nationality: req.body.nationality
+        nationality: req.body.nationality,
+        image: req.body.image ? req.body.image : fs.readFileSync(path.resolve("public/images", "default-profile.png"))
     });
 
     user.save((err, user) => {
@@ -78,7 +81,7 @@ exports.signin = (req, res) => {
             }
 
             if (!user) {
-                return res.status(404).send({ message: "User Not found." });
+                return res.status(404).send({ message: "Invalid Credentials" });
             }
 
             let passwordIsValid = bcrypt.compareSync(
@@ -89,26 +92,20 @@ exports.signin = (req, res) => {
             if (!passwordIsValid) {
                 return res.status(401).send({
                     accessToken: null,
-                    message: "Invalid Password!"
+                    message: "Invalid Credentialss!"
                 });
             }
 
-            var token = jwt.sign({ id: user.id }, config.secret, {
-                expiresIn: 86400 // 24 hours
+            let token = jwt.sign({ id: user.id }, config.secret, {
+                expiresIn: 10 // 24 hours
             });
 
-            var authorities = [];
+            let authorities = [];
 
             for (let i = 0; i < user.roles.length; i++) {
                 authorities.push("ROLE_" + user.roles[i].name.toUpperCase());
             }
-            res.status(200).send({
-                id: user._id,
-                userName: user.userName,
-                email: user.email,
-                roles: authorities,
-                accessToken: token,
-                nationality: user.nationality
-            });
+
+            res.status(200).send({...(user.toObject()), roles: authorities, accessToken: token});
         });
 };
