@@ -8,7 +8,6 @@ const fs = require("fs");
 const path = require("path");
 
 exports.signup = (req, res) => {
-    console.log(req.body)
     const user = new User({
         userName: req.body.userName,
         name: req.body.name,
@@ -16,7 +15,7 @@ exports.signup = (req, res) => {
         email: req.body.email,
         password: bcrypt.hashSync(req.body.password, 8),
         nationality: req.body.nationality,
-        image: req.body.image ? req.body.image : fs.readFileSync(path.resolve("public/images", "default-profile.png"))
+        image: req.body.image ? req.body.image : Buffer(fs.readFileSync(path.resolve("public/images", "default-profile.png"), "base64"))
     });
 
     user.save((err, user) => {
@@ -92,12 +91,12 @@ exports.signin = (req, res) => {
             if (!passwordIsValid) {
                 return res.status(401).send({
                     accessToken: null,
-                    message: "Invalid Credentialss!"
+                    message: "Invalid Credentials!"
                 });
             }
 
             let token = jwt.sign({ id: user.id }, config.secret, {
-                expiresIn: 10 // 24 hours
+                expiresIn: 86400 // 24 hours
             });
 
             let authorities = [];
